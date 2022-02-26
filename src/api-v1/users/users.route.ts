@@ -4,8 +4,8 @@ import Controller from "./users.controller";
 const users: Router = Router();
 const controller = new Controller();
 
-users.route("/signup").post(controller.signUpUser)
-users.route("/login").post(controller.loginUser)
+users.route("/course")
+    .get(controller.getCourses)
 
 
 export default users;
