@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { PrismaClient, Prisma } from "@prisma/client";
-const jwt = require('jsonwebtoken');
+import { PrismaClient } from "@prisma/client";
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const prisma = new PrismaClient();
@@ -24,33 +24,33 @@ export default class UserController {
   };
 
   public getUser = async (req: Request, res: Response) => {
-    const { user_id, email, password } = req.body;
+    const { email, password } = req.body;
     const user = await prisma.user.findFirst({
       where: {
         email,
       },
     });
 
-    if(bcrypt.compareSync(password, user.password)){
-      const token = jwt.sign({
-        email,
-        userId: user_id,
-      },
-      process.env.SECRET,
-      {
-        expiresIn: "12h"
-      }
+    if (bcrypt.compareSync(password, user.password)) {
+      const token = jwt.sign(
+        {
+          email,
+          userId: user.user_id,
+        },
+        process.env.SECRET,
+        {
+          expiresIn: "12h",
+        }
       );
       res.status(200).send({
         success: "true",
         user,
         token,
       });
-    }
-    else{
+    } else {
       res.status(400).send({
-        errorMessage : "Invalid Password",
-      })
+        errorMessage: "Invalid Password",
+      });
     }
   };
 
