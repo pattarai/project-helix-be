@@ -1,16 +1,20 @@
-//import * as bcrypt from 'bcrypt';
 import { Request, Response } from "express";
 import { PrismaClient, Prisma } from "@prisma/client";
+const jwt = require('jsonwebtoken');
+const bcrypt = require("bcryptjs");
 
 const prisma = new PrismaClient();
 
 export default class UserController {
   public createUser = async (req: Request, res: Response) => {
-    const { name, email } = req.body;
+    console.log("Inside create user");
+    const { name, email, password } = req.body;
+    const hashPassword = bcrypt.hashSync(password, 10);
     const user = await prisma.user.create({
       data: {
         name,
         email,
+        password: hashPassword,
       },
     });
     res.status(200).send({
@@ -20,17 +24,34 @@ export default class UserController {
   };
 
   public getUser = async (req: Request, res: Response) => {
-    const { user_id } = req.body;
+    const { user_id, email, password } = req.body;
     const user = await prisma.user.findFirst({
       where: {
-        user_id,
+        email,
       },
     });
 
-    res.status(200).send({
-      success: "true",
-      user,
-    });
+    if(bcrypt.compareSync(password, user.password)){
+      const token = jwt.sign({
+        email,
+        userId: user_id,
+      },
+      process.env.SECRET,
+      {
+        expiresIn: "12h"
+      }
+      );
+      res.status(200).send({
+        success: "true",
+        user,
+        token,
+      });
+    }
+    else{
+      res.status(400).send({
+        errorMessage : "Invalid Password",
+      })
+    }
   };
 
   public updateUser = async (req: Request, res: Response) => {

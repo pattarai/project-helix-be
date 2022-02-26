@@ -10,7 +10,7 @@ let checkToken = (req, res, next) => {
   if (token) {
     jwt.verify(
       token,
-      "N4ClogES5kHchz2C10VljjdLiOHa0rKQr3cFOtW9mt8UAbAB30",
+      process.env.SECRET,
       (err, decoded) => {
         if (err) {
           return res.json({
