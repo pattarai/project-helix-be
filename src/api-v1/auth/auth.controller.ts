@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { validateSignUpBody } from "../../helpers/validator";
+import { validateSignUpBody } from "../../middleware/validator";
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
