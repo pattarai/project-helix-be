@@ -38,32 +38,47 @@ export default class UserController {
   };
 
   public loginUser = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-    const user = await prisma.user.findFirst({
-      where: {
-        email,
-      },
-    });
-
-    if (bcrypt.compareSync(password, user.password)) {
-      const token = jwt.sign(
-        {
+    try{
+      const { email, password } = req.body;
+      const user = await prisma.user.findFirst({
+        where: {
           email,
-          userId: user.user_id,
         },
-        process.env.SECRET,
-        {
-          expiresIn: "12h",
-        }
-      );
-      res.status(200).send({
-        success: "true",
-        user,
-        token,
       });
-    } else {
-      res.status(400).send({
-        errorMessage: "Invalid Password",
+      
+      if(user != null){
+        if (bcrypt.compareSync(password, user.password)) {
+          const token = jwt.sign(
+            {
+              email,
+              userId: user.user_id,
+            },
+            process.env.SECRET,
+            {
+              expiresIn: "12h",
+            }
+          );
+          res.status(200).send({
+            success: "true",
+            user,
+            token,
+          });
+        } else {
+          res.status(400).send({
+            errorMessage: "Invalid Password",
+          });
+       }
+     }
+     else{
+       res.status(400).send({
+         errorMessage:"Invalid Email",
+       })
+     }
+    }catch(e){
+      console.error(e);
+      res.status(500).send({
+        createMovieResponse: false,
+        message: e.toString(),
       });
     }
   };
