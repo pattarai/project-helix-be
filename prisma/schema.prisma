@@ -10,10 +10,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  user_id Int @id @default(autoincrement())
-  name String?
-  email String @unique
+  user_id  Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
   password String
+  avatar   String?
+  admin    Boolean @default(false)
+  follower Int?    @default(0)
+  Badge    Badge[]
+}
+
+model Badge {
+  id         Int    @id @default(autoincrement())
+  name       String
+  image      String
+  user_email String
+  user       User   @relation(fields: [user_email], references: [email])
 }
