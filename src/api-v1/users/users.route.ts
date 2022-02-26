@@ -6,9 +6,7 @@ const controller = new Controller();
 
 users
   .route("/")
-  .post(controller.createUser)
-  .get(controller.getUser)
-  .put(controller.updateUser)
-  .delete(controller.deleteUser);
+  .post(controller.signUpUser)
+  .get(controller.loginUser)
 
 export default users;
