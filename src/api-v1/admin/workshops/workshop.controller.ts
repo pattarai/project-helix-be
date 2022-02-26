@@ -31,28 +31,6 @@ export default class WorkshopController {
         description,
       },
     });
-
-    // if (bcrypt.compareSync(workshop, workshop.password)) {
-    //   const token = jwt.sign(
-    //     {
-    //       name,
-    //       workshopId: workshop.user_id,
-    //     },
-    //     process.env.SECRET,
-    //     {
-    //       expiresIn: "12h",
-    //     }
-    //   );
-    //   res.status(200).send({
-    //     success: "true",
-    //     user,
-    //     token,
-    //   });
-    // } else {
-    //   res.status(400).send({
-    //     errorMessage: "Invalid Password",
-    //   });
-    // }
   };
 
   public updateWorkshop = async (req: Request, res: Response) => {

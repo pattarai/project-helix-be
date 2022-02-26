@@ -9,8 +9,7 @@ const prisma = new PrismaClient();
 export default class AuthController {
   public signUpUser = async (req: Request, res: Response) => {
     try{
-      console.log("Inside create user");
-      const { name, email, password, avatar, admin, follower } = req.body;
+      const { name, email, password, avatar, admin } = req.body;
       if(validateSignUpBody(req,res)){
         const hashPassword = bcrypt.hashSync(password, 10);
         const checkUser = await prisma .user.findFirst({
@@ -31,7 +30,6 @@ export default class AuthController {
               password: hashPassword,
               avatar,
               admin,
-              follower,
             },
           });
           res.status(200).send({
@@ -42,7 +40,7 @@ export default class AuthController {
       }
     }catch(e){
       console.error(e);
-    res.status(500).send({
+      res.status(500).send({
       createUser: false,
       message: e.toString(),
     });
