@@ -18,13 +18,4 @@ model User {
   avatar   String?
   admin    Boolean @default(false)
   follower Int?    @default(0)
-  Badge    Badge[]
-}
-
-model Badge {
-  id         Int    @id @default(autoincrement())
-  name       String
-  image      String
-  user_email String
-  user       User   @relation(fields: [user_email], references: [email])
 }
