@@ -10,28 +10,40 @@ export default class AuthController {
   public signUpUser = async (req: Request, res: Response) => {
     try{
       console.log("Inside create user");
-    const { name, email, password, avatar, admin, follower } = req.body;
-    if(validateSignUpBody(req,res)){
-      const hashPassword = bcrypt.hashSync(password, 10);
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashPassword,
-        avatar,
-        admin,
-        follower,
-      },
-    });
-    res.status(200).send({
-      success: "true",
-      createdUser: user,
-    });
-    }
+      const { name, email, password, avatar, admin, follower } = req.body;
+      if(validateSignUpBody(req,res)){
+        const hashPassword = bcrypt.hashSync(password, 10);
+        const checkUser = await prisma .user.findFirst({
+          where:{
+            email,
+          }
+        })
+        if(checkUser){
+          res.status(400).send({
+            errorMessage: "User already exists"
+          })
+        }
+        else{
+          const user = await prisma.user.create({
+            data: {
+              name,
+              email,
+              password: hashPassword,
+              avatar,
+              admin,
+              follower,
+            },
+          });
+          res.status(200).send({
+            success: "true",
+            createdUser: user,
+          });
+        }
+      }
     }catch(e){
       console.error(e);
     res.status(500).send({
-      createMovieResponse: false,
+      createUser: false,
       message: e.toString(),
     });
     }
@@ -52,6 +64,7 @@ export default class AuthController {
             {
               email,
               userId: user.user_id,
+              admin: user.admin,
             },
             process.env.SECRET,
             {
@@ -77,7 +90,7 @@ export default class AuthController {
     }catch(e){
       console.error(e);
       res.status(500).send({
-        createMovieResponse: false,
+        createUser: false,
         message: e.toString(),
       });
     }
