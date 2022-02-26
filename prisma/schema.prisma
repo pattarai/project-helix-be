@@ -19,3 +19,20 @@ model User {
   admin    Boolean @default(false)
   follower Int?    @default(0)
 }
+
+model Workshop {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  Topic       Topic[]
+}
+
+model Topic {
+  id            Int      @id @default(autoincrement())
+  name          String
+  description   String?
+  url           String?
+  workshop_name String
+  workshop      Workshop @relation(fields: [workshop_name], references: [name])
+  @@unique([name, workshop_name])
+}
