@@ -29,7 +29,7 @@ export const validateSignUpBody = (req:Request, res:Response) =>{
     }catch(e){
     console.error(e);
     res.status(500).send({
-      createMovieResponse: false,
+      createUserResponse: false,
       message: e.toString(),
     });
     }
