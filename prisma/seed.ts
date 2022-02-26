@@ -1,43 +1,39 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import faker from "@faker-js/faker";
-
+const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
 
-const NUMBER_OF_USERS = 10;
-const MAX_POSTS = 10;
-const MAX_PROFILES = 2;
+const NUMBER_OF_USERS = 20;
+const NUMBER_OF_WORKSHOPS = 10;
 
 const users: Prisma.UserCreateInput[] = Array.from({
   length: NUMBER_OF_USERS,
 }).map((_, i) => ({
-  email: faker.internet.email(),
   name: faker.name.firstName(),
-  posts: {
-    createMany: {
-      data: Array.from({
-        length: faker.datatype.number({ min: 0, max: MAX_POSTS }),
-      }).map(() => ({
-        content: faker.lorem.paragraphs(),
-        title: faker.lorem.words(),
-      })),
-    },
-  },
-  profiles: {
-    createMany: {
-      data: Array.from({
-        length: faker.datatype.number({ min: 1, max: MAX_PROFILES }),
-      }).map(() => ({
-        bio: faker.lorem.paragraph(),
-      })),
+  email: faker.internet.email(),
+  password: bcrypt.hashSync(faker.random.word(), 10),
+  avatar: faker.internet.avatar(),
+}));
+
+const workshops: Prisma.WorkshopCreateInput[] = Array.from({
+  length: NUMBER_OF_WORKSHOPS,
+}).map((_, i) => ({
+  name: faker.random.word(),
+  description: faker.lorem.words(5),
+  Topic: {
+    create: {
+      name: faker.random.word(),
+      description: faker.lorem.words(5),
+      url: faker.internet.url(),
     },
   },
 }));
 
 async function main() {
   await prisma.$transaction(
-    users.map((user) =>
-      prisma.user.create({
-        data: user,
+    workshops.map((workshop) =>
+      prisma.workshop.create({
+        data: workshop,
       })
     )
   );
