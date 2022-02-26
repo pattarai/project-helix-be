@@ -8,21 +8,20 @@ const prisma = new PrismaClient();
 
 export default class AuthController {
   public signUpUser = async (req: Request, res: Response) => {
-    try{
+    try {
       const { name, email, password, avatar, admin } = req.body;
-      if(validateSignUpBody(req,res)){
+      if (validateSignUpBody(req, res)) {
         const hashPassword = bcrypt.hashSync(password, 10);
-        const checkUser = await prisma .user.findFirst({
-          where:{
+        const checkUser = await prisma.user.findFirst({
+          where: {
             email,
-          }
-        })
-        if(checkUser){
+          },
+        });
+        if (checkUser) {
           res.status(400).send({
-            errorMessage: "User already exists"
-          })
-        }
-        else{
+            errorMessage: "User already exists",
+          });
+        } else {
           const user = await prisma.user.create({
             data: {
               name,
@@ -38,25 +37,25 @@ export default class AuthController {
           });
         }
       }
-    }catch(e){
+    } catch (e) {
       console.error(e);
       res.status(500).send({
-      createUser: false,
-      message: e.toString(),
-    });
+        createUser: false,
+        message: e.toString(),
+      });
     }
   };
 
   public loginUser = async (req: Request, res: Response) => {
-    try{
+    try {
       const { email, password } = req.body;
       const user = await prisma.user.findFirst({
         where: {
           email,
         },
       });
-      
-      if(user != null){
+
+      if (user != null) {
         if (bcrypt.compareSync(password, user.password)) {
           const token = jwt.sign(
             {
@@ -78,14 +77,13 @@ export default class AuthController {
           res.status(400).send({
             errorMessage: "Invalid Password",
           });
-       }
-     }
-     else{
-       res.status(400).send({
-         errorMessage:"Invalid Email",
-       })
-     }
-    }catch(e){
+        }
+      } else {
+        res.status(400).send({
+          errorMessage: "Invalid Email",
+        });
+      }
+    } catch (e) {
       console.error(e);
       res.status(500).send({
         createUser: false,
@@ -93,4 +91,12 @@ export default class AuthController {
       });
     }
   };
+
+  // public checkUser = async (req: Request, res: Response) => {
+  //   await try {
+
+  //   } catch (error) {
+
+  //   }
+  // };
 }
