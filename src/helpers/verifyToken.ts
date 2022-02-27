@@ -1,6 +1,6 @@
 let jwt = require("jsonwebtoken");
 
-let checkToken = (req, res, next) => {
+let verifyToken = (req: any, res: any, next: any) => {
   let token = req.headers["x-access-token"] || req.headers["authorization"]; // Express headers are auto converted to lowercase
 
   if (token) {
@@ -15,14 +15,8 @@ let checkToken = (req, res, next) => {
           message: "Token is not valid",
         });
       } else {
-        if (decoded.admin) {
-          res.locals.user = decoded.admin;
-          next();
-        } else {
-          return res.json({
-            message: "Requires admin access",
-          });
-        }
+        res.locals.admin = decoded.admin;
+        next();
       }
     });
   } else {
@@ -32,4 +26,4 @@ let checkToken = (req, res, next) => {
   }
 };
 
-export default checkToken;
+export default verifyToken;
