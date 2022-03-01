@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 export default class AuthController {
   public signUpUser = async (req: Request, res: Response) => {
     try {
-      const { name, email, password, avatar, admin } = req.body;
+      const { name, email, password, avatar, admin, institute, department, year } = req.body;
       if (validateSignUpBody(req, res)) {
         const hashPassword = bcrypt.hashSync(password, 10);
         const checkUser = await prisma.user.findFirst({
@@ -29,6 +29,9 @@ export default class AuthController {
               password: hashPassword,
               avatar,
               admin,
+              institute,
+              department,
+              year,
             },
           });
           res.status(200).send({
@@ -53,6 +56,13 @@ export default class AuthController {
         where: {
           email,
         },
+        select:{
+          user_id: true,
+          name: true,
+          email: true,
+          password: true,
+          admin: true,
+        }
       });
 
       if (user != null) {

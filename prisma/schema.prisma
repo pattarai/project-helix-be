@@ -17,7 +17,7 @@ model User {
   password String
   avatar   String?
   admin    Boolean @default(false)
-  clg_name String
+  institute String
   department String
   year Int
 }

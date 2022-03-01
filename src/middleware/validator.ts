@@ -23,6 +23,26 @@ export const validateSignUpBody = (req:Request, res:Response) =>{
                 errorMessage: "Admin role must be provided",
             })
         }
+        else if(req.body.institute == ""){
+            res.status(400).send({
+                errorMessage: "Institute name must be provided",
+            })
+        }
+        else if(req.body.department === ""){
+            res.status(400).send({
+                errorMessage: "Department/ Mainstream of study must be provided",
+            })
+        }
+        else if(req.body.year === undefined){
+            res.status(400).send({
+                errorMessage: "Year of study must be provided",
+            })
+        }
+        else if(req.body.year > 4 || req.body.year < 1){
+            res.status(400).send({
+                errorMessage: "Invalid year of study",
+            })
+        }
         else{
             return true;
         }
