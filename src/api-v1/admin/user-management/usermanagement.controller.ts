@@ -11,7 +11,7 @@ export default class UserManagementController {
         const user = await prisma.user.findFirst({
             where:{
                 user_id,
-            }
+            },
         });
         if(user){
             res.status(200).send({

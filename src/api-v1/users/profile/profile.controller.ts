@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import { validateUpdateUserBody } from "../../../middleware/validator";
 
 const prisma = new PrismaClient();
 
@@ -13,6 +14,7 @@ export default class ProfileController {
             }
         });
         if(user){
+            delete user['password'];
             res.status(200).send({
                 getUserResponse: true,
                 user,
@@ -78,9 +80,9 @@ export default class ProfileController {
             }
         });
         if(checkUser){
-            const {name, avatar} = req.body;
+            const {name, avatar, institute, department, year} = req.body;
             console.log(name);
-            if(name != ""){
+            if(validateUpdateUserBody(req, res)){
                 const user = await prisma.user.update({
                     where:{
                         user_id,
@@ -88,17 +90,15 @@ export default class ProfileController {
                     data:{
                         name,
                         avatar,
+                        institute,
+                        department,
+                        year,
                     }
                 })
+                delete user['password'];
                 res.status(200).send({
                     updateUserResponse: true,
                     user,
-                })
-            }
-            else{
-                res.status(400).send({
-                    updateUserResponse: false,
-                    errorMessage: "Name must be provided",
                 })
             }
         }else{
