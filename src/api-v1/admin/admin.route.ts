@@ -6,8 +6,8 @@ import workshop from "./workshops/workshop.route";
 const admin: Router = Router();
 
 
-admin.use("/workshop",verifyToken, workshop);
-admin.use("/user",verifyToken, user)
+admin.use("/workshop", workshop);
+admin.use("/user", user)
 
 
 export default admin;

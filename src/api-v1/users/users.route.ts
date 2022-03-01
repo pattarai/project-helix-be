@@ -5,6 +5,6 @@ import verifyToken from "../../helpers/verifyToken";
 
 const users: Router = Router();
 
-users.use("/profile",verifyToken,userprofile);
+users.use("/profile",userprofile);
 
 export default users;

@@ -17,7 +17,9 @@ model User {
   password String
   avatar   String?
   admin    Boolean @default(false)
-  follower Int?    @default(0)
+  clg_name String
+  department String
+  year Int
 }
 
 model Workshop {
