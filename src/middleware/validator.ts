@@ -89,3 +89,19 @@ export const validateUpdateUserBody = (req:Request, res:Response) => {
     });
     }
 }
+
+export const validateCreateWorshop = (req, res) =>{
+    if(req.body.name == ""){
+        res.status(400).send({
+            errorMessage: "Workshop Name must not be empty",
+        })
+    }
+    else if(req.body.description == ""){
+        req.status(400).send({
+            errorMessage: "Workshop Description must not be empty",
+        })
+    }
+    else{
+        return true;
+    }
+}

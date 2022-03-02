@@ -5,7 +5,7 @@ const workshop: Router = Router();
 const controller = new Controller();
 
 workshop.route("/")
-    .get(controller.getWorkshop)
+    .post(controller.createWorkshop)
 
 
 export default workshop;
