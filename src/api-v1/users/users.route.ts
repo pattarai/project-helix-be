@@ -1,7 +1,7 @@
 import { profile } from "console";
 import { Router } from "express";
 import userprofile from "./profile/profile.route";
-import verifyToken from "../../helpers/verifyToken";
+import verifyToken from "../../helpers/verifyAdminToken";
 
 const users: Router = Router();
 

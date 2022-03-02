@@ -48,6 +48,7 @@ export default class UserManagementController {
                     user_id,
                 }
             });
+            delete user['password'];
             res.status(200).send({
                 deleteUserResponse: true,
                 user,

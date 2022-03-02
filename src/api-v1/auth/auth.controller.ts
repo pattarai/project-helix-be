@@ -34,6 +34,7 @@ export default class AuthController {
               year,
             },
           });
+          delete user['password'];
           res.status(200).send({
             success: "true",
             createdUser: user,
@@ -78,6 +79,7 @@ export default class AuthController {
               expiresIn: "12h",
             }
           );
+          delete user['password'];
           res.status(200).send({
             success: "true",
             user,

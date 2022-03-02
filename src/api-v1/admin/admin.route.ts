@@ -1,5 +1,5 @@
 import { Router } from "express";
-import verifyToken from "../../helpers/verifyToken";
+import verifyToken from "../../helpers/verifyAdminToken";
 import user from "./user-management/usermanagement.route";
 import workshop from "./workshops/workshop.route";
 
