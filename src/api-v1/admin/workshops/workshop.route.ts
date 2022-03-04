@@ -6,6 +6,7 @@ const controller = new Controller();
 
 workshop.route("/")
     .post(controller.createWorkshop)
+    .get(controller.getWorkshop)
 
 
 export default workshop;
