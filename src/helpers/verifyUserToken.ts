@@ -12,22 +12,17 @@ let verifyUserToken = (req: any, res: any, next: any) => {
     jwt.verify(token, process.env.SECRET, (err: any, decoded: any) => {
       if (err) {
         return res.json({
+          success: false,
           message: "Token is not valid",
         });
       } else {
-          if(decoded.userId == req.body.user_id){
-            res.locals.admin = decoded.admin;
-            next();
-          }
-          else{
-              res.status(403).send({
-                  message: "Invalid Access",
-              })
-          }
+        res.locals.admin = decoded.admin;
+        next();
       }
     });
   } else {
     return res.json({
+      success: false,
       message: "Auth token is not supplied",
     });
   }
