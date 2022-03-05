@@ -2,7 +2,7 @@
   "name": "express-typescript-boilerplate",
   "version": "1.0.0",
   "description": "A scalable boilerplate for express.js and typescript with prisma config",
-  "main": "index.ts",
+  "main": "./src/index.ts",
   "scripts": {
     "seed": "ts-node ./prisma/seed.ts",
     "build": "npx prisma generate && tsc",
