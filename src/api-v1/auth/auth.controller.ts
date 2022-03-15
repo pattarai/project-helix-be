@@ -34,10 +34,22 @@ export default class AuthController {
               year,
             },
           });
+          const token = jwt.sign(
+            {
+              email,
+              userId: user.user_id,
+              admin: user.admin,
+            },
+            process.env.SECRET,
+            {
+              expiresIn: "12h",
+            }
+          );
           delete user['password'];
           res.status(200).send({
             success: "true",
             createdUser: user,
+            token,
           });
         }
       }
