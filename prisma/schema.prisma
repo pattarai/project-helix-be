@@ -11,15 +11,15 @@ datasource db {
 }
 
 model User {
-  user_id  Int     @id @default(autoincrement())
-  name     String
-  email    String  @unique
-  password String
-  avatar   String?
-  admin    Boolean @default(false)
-  institute String
-  department String
-  year Int
+  user_id    Int     @id @default(autoincrement())
+  name       String
+  email      String  @unique
+  password   String
+  avatar     String?
+  admin      Boolean @default(false)
+  institute  String?
+  department String?
+  year       Int?
 }
 
 model Workshop {
@@ -36,5 +36,6 @@ model Topic {
   url           String?
   workshop_name String
   workshop      Workshop @relation(fields: [workshop_name], references: [name])
+
   @@unique([name, workshop_name])
 }
