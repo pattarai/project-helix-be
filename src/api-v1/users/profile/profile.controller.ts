@@ -8,10 +8,10 @@ const prisma = new PrismaClient();
 export default class ProfileController {
   public getUser = async (req: Request, res: Response) => {
       try{
-        const {user_id} = req.body;
+        const email = req.params.email;
         const user = await prisma.user.findFirst({
             where:{
-                user_id,
+                email,
             }
         });
         if(user){
