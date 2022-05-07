@@ -20,6 +20,7 @@ model User {
   institute String
   department String
   year Int
+  enroll Enrollment[]
 }
 
 model Workshop {
@@ -27,6 +28,17 @@ model Workshop {
   name        String  @unique
   description String
   Topic       Topic[]
+  enroll  Enrollment[]
+}
+
+model Enrollment{
+  id Int @id @default(autoincrement())
+  workshop_name String
+  user_id Int
+  user User @relation(fields: [user_id], references: [user_id])
+  workshop Workshop @relation(fields: [workshop_name], references:[name])
+
+  @@unique([user_id, workshop_name])
 }
 
 model Topic {
