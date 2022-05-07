@@ -14,6 +14,8 @@ let verifyAdminToken = (req: any, res: any, next: NextFunction) => {
 
     jwt.verify(token, process.env.SECRET, (err: any, decoded: any) => {
       if (err) {
+        console.log(err);
+        
         return res.status(400).json({
           message: "Token is not valid",
         });

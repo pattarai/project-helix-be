@@ -6,14 +6,6 @@ const prisma = new PrismaClient();
 const NUMBER_OF_USERS = 20;
 const NUMBER_OF_WORKSHOPS = 10;
 
-const users: Prisma.UserCreateInput[] = Array.from({
-  length: NUMBER_OF_USERS,
-}).map((_, i) => ({
-  name: faker.name.firstName(),
-  email: faker.internet.email(),
-  password: bcrypt.hashSync(faker.random.word(), 10),
-  avatar: faker.internet.avatar(),
-}));
 
 const workshops: Prisma.WorkshopCreateInput[] = Array.from({
   length: NUMBER_OF_WORKSHOPS,

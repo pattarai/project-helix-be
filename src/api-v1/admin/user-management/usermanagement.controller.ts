@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import user from "./usermanagement.route";
 
 
 const prisma = new PrismaClient();
@@ -7,12 +8,14 @@ const prisma = new PrismaClient();
 export default class UserManagementController {
   public getUser = async (req: Request, res: Response) => {
       try{
-        const {user_id} = req.body;
+        const email = req.params.email;
         const user = await prisma.user.findFirst({
             where:{
-                user_id,
+                email,
             },
+            
         });
+        delete user['password'];
         if(user){
             res.status(200).send({
                 getUserResponse: true,
@@ -22,7 +25,7 @@ export default class UserManagementController {
         else{
             res.status(400).send({
                 getUserResponse: false,
-                errorMessage: "Invalid User ID",
+                errorMessage: "Invalid User email",
             })
         }
       }catch(e){
@@ -36,16 +39,16 @@ export default class UserManagementController {
 
   public deleteUser =async (req:Request, res: Response) => {
       try{
-        const {user_id} = req.body;
+        const email = req.params.email;
         const checkUser = await prisma.user.findFirst({
             where:{
-                user_id,
+                email,
             }
         });
         if(checkUser){
             const user = await prisma.user.delete({
                 where:{
-                    user_id,
+                    email,
                 }
             });
             delete user['password'];
@@ -57,7 +60,7 @@ export default class UserManagementController {
         else{
             res.status(400).send({
                 deleteUserResponse: false,
-                errorMessage: "Invalid User ID",
+                errorMessage: "Invalid User email",
                 
             })
         }
