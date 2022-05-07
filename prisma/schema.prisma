@@ -48,5 +48,6 @@ model Topic {
   url           String?
   workshop_name String
   workshop      Workshop @relation(fields: [workshop_name], references: [name])
+
   @@unique([name, workshop_name])
 }
