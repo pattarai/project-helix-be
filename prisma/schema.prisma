@@ -11,44 +11,37 @@ datasource db {
 }
 
 model User {
-  user_id    Int          @id @default(autoincrement())
-  name       String
-  email      String       @unique
-  password   String
-  avatar     String?
-  admin      Boolean      @default(false)
-  institute  String
-  department String
-  year       Int
-  enroll     Enrollment[]
+  user_id  Int    @id @default(autoincrement())
+  email    String @unique
+  password String
 }
 
-model Workshop {
-  id          Int          @id @default(autoincrement())
-  name        String       @unique
-  description String
-  tag         String[]
-  Topic       Topic[]
-  enroll      Enrollment[]
-}
+// model Workshop {
+//   id          Int          @id @default(autoincrement())
+//   name        String       @unique
+//   description String
+//   tag         String[]
+//   Topic       Topic[]
+//   enroll      Enrollment[]
+// }
 
-model Enrollment {
-  id            Int      @id @default(autoincrement())
-  workshop_name String
-  user_id       Int
-  user          User     @relation(fields: [user_id], references: [user_id])
-  workshop      Workshop @relation(fields: [workshop_name], references: [name])
+// model Enrollment {
+//   id            Int      @id @default(autoincrement())
+//   workshop_name String
+//   user_id       Int
+//   // user          User     @relation(fields: [user_id], references: [user_id])
+//   workshop      Workshop @relation(fields: [workshop_name], references: [name])
 
-  @@unique([user_id, workshop_name])
-}
+//   @@unique([user_id, workshop_name])
+// }
 
-model Topic {
-  id            Int      @id @default(autoincrement())
-  name          String
-  description   String?
-  url           String?
-  workshop_name String
-  workshop      Workshop @relation(fields: [workshop_name], references: [name])
+// model Topic {
+//   id            Int      @id @default(autoincrement())
+//   name          String
+//   description   String?
+//   url           String?
+//   workshop_name String
+//   workshop      Workshop @relation(fields: [workshop_name], references: [name])
 
-  @@unique([name, workshop_name])
-}
+//   @@unique([name, workshop_name])
+// }

@@ -10,7 +10,7 @@ import checkAccess from "../middleware/checkAccess";
 const router: Router = Router();
 
 router.use("/auth", auth);
-router.use("/admin",verifyAdminToken, admin);
-router.use("/users", verifyUserToken, users);
+// router.use("/admin",verifyAdminToken, admin);
+// router.use("/users", verifyUserToken, users);
 
 export default router;

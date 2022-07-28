@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 export default class AuthController {
   public signUpUser = async (req: Request, res: Response) => {
     try {
-      const { name, email, password, avatar, admin, institute, department, year } = req.body;
+      const { email, password } = req.body;
       if (validateSignUpBody(req, res)) {
         const hashPassword = bcrypt.hashSync(password, 10);
         const checkUser = await prisma.user.findFirst({
@@ -24,28 +24,21 @@ export default class AuthController {
         } else {
           const user = await prisma.user.create({
             data: {
-              name,
               email,
               password: hashPassword,
-              avatar,
-              admin,
-              institute,
-              department,
-              year,
             },
           });
           const token = jwt.sign(
             {
               email,
               userId: user.user_id,
-              admin: user.admin,
             },
             process.env.SECRET,
             {
               expiresIn: "12h",
             }
           );
-          delete user['password'];
+          delete user["password"];
           res.status(200).send({
             success: "true",
             createdUser: user,
@@ -69,13 +62,11 @@ export default class AuthController {
         where: {
           email,
         },
-        select:{
+        select: {
           user_id: true,
-          name: true,
           email: true,
           password: true,
-          admin: true,
-        }
+        },
       });
 
       if (user != null) {
@@ -84,14 +75,13 @@ export default class AuthController {
             {
               email,
               userId: user.user_id,
-              admin: user.admin,
             },
             process.env.SECRET,
             {
               expiresIn: "12h",
             }
           );
-          delete user['password'];
+          delete user["password"];
           res.status(200).send({
             success: "true",
             user,
